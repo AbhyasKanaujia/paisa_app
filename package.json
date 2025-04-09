@@ -1,0 +1,24 @@
+{
+  "name": "paisa_app",
+  "version": "1.0.0",
+  "description": "Personal Budget Management",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbhyasKanaujia/paisa_app.git"
+  },
+  "keywords": [
+    "finance",
+    "budget",
+    "money"
+  ],
+  "author": "Abhyas Kumar Kanaujia",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/AbhyasKanaujia/paisa_app/issues"
+  },
+  "homepage": "https://github.com/AbhyasKanaujia/paisa_app#readme"
+}
