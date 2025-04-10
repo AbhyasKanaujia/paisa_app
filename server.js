@@ -3,7 +3,10 @@ const express = require('express');
 const connectDB = require('./config/db');
 const budgetRoutes = require('./routes/budgetRoutes');
 
+const cors = require('cors');
+
 const app = express();
+app.use(cors());
 connectDB();
 app.use(express.json());
 
