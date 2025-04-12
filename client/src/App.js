@@ -2,6 +2,8 @@ import React from 'react';
 import IncomeForm from './components/IncomeForm';
 import ExpenseForm from './components/ExpenseForm';
 import Summary from './components/Summary';
+import TransactionList from './components/TransactionList';
+
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
           <ExpenseForm />
         </div>
         <Summary />
+        <TransactionList />
       </div>
   );
 }
