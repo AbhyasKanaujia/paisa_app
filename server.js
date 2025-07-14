@@ -15,7 +15,11 @@ app.use(express.json());
 
 connectDB();
 
-app.use('/api/budget', budgetRoutes);
+app.use("/api/users", require("./routes/user"));
+app.use("/api/transactions", require("./routes/transaction"));
+app.use("/api/batches", require("./routes/batch"));
+app.use("/api/accounts", require("./routes/account"));
+app.use("/api/tags", require("./routes/tag"));
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));

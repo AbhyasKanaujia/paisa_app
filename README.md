@@ -20,6 +20,7 @@ Inspired by **Vim**, **Typeform**, and **command palettes**, this app lets you l
 - 🧠 **Smart parsing**. Natural language style input.
 - 📌 **Pin recurring context** like account, date, or tags — enter dozens of entries without repetition.
 - 🗂 **Batch entries**. Log multiple transactions in one go.
+- 🏹 **Arrow-key mode switch** — easily toggle between expense and income entry.
 
 ---
 
@@ -27,7 +28,7 @@ Inspired by **Vim**, **Typeform**, and **command palettes**, this app lets you l
 
 ### 🔹 A single entry:
 ```
-> ₹150 coffee @Starbucks from HDFC on Apr 10 #food
+> 150 coffee @Starbucks from HDFC on Apr 10 #food
 ```
 
 ### 🔹 Pin context:
@@ -36,8 +37,8 @@ Inspired by **Vim**, **Typeform**, and **command palettes**, this app lets you l
 ```
 Now just:
 ```
-> ₹120 sandwich @Subway
-> ₹200 tea @Chaayos
+> 120 sandwich @Subway
+> 200 tea @Chaayos
 ```
 
 All inherit the pinned values.
@@ -50,12 +51,37 @@ All inherit the pinned values.
 ### 🔹 Batch mode:
 Paste multiple lines:
 ```
-> ₹100 dosa @Sagar
-> ₹80 juice @JuiceHub
-> ₹60 vada @StreetStall
+> 100 dosa @Sagar
+> 80 juice @JuiceHub
+> 60 vada @StreetStall
 ```
 
 Boom — logged instantly.
+
+### 🔹 Income entry:
+```
+< 10000 salary from Razorpay on Apr 7 #income
+```
+
+---
+
+## 🔁 Entry Mode Controls
+
+### 🧭 Markers
+- Use `>` for **Expense** (default)
+- Use `<` for **Income**
+
+### ⌨️ Arrow Key Shortcuts
+- `→` Right Arrow → Expense mode
+- `←` Left Arrow → Income mode
+- Optional: `Shift + Arrow` to **pin** mode across batch entries
+
+### 🧠 Fallback Priority
+1. Arrow key override (most recent)
+2. Marker symbol (`>` or `<`)
+3. Default: Expense
+
+Live parser preview updates with mode changes.
 
 ---
 
@@ -82,6 +108,7 @@ Boom — logged instantly.
 - [ ] Monthly summaries
 - [ ] Offline-first support
 - [ ] Sync with cloud
+- [ ] Expense/income arrow key toggle
 
 ---
 
@@ -102,7 +129,6 @@ git clone https://github.com/AbhyasKanaujia/paisa_app.git
 cd paisa-app
 npm install
 npm run dev
-
 ```
 
 ---
@@ -117,3 +143,4 @@ We’re building this for humans who value **clarity, speed, and flow**.
 ## 📜 License
 
 GPL-3.0-or-later
+
