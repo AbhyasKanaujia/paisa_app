@@ -1,16 +1,12 @@
 import React from 'react';
-
-import { motion } from 'framer-motion';
+import EntryBar from '../components/EntryBar';
 
 function Console() {
   return (
-    <motion.div
-      initial={{opacity: 0, y: 20}}
-      animate={{opacity: 1, y: 0}}
-      transition={{duration: 0.3}}
-    >
-      Hello Paisa
-    </motion.div>
+    <div style={{ padding: '2rem' }}>
+      <h2 className="mb-4">Paisa Console</h2>
+      <EntryBar />
+    </div>
   );
 }
 
