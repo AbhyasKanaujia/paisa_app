@@ -3,6 +3,7 @@ import { Form, Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import parseEntryStub from '../utils/parseEntryStub';
 import usePinnedContextStore from '../store/usePinnedContextStore';
+import useEntryLogStore from '../store/useEntryLogStore';
 
 function EntryBar() {
   const [input, setInput] = useState('');
@@ -10,12 +11,12 @@ function EntryBar() {
 
   const pinContext = usePinnedContextStore((state) => state.pinContext);
   const unpinAll = usePinnedContextStore((state) => state.unpinAll);
+  const addEntry = useEntryLogStore((state) => state.addEntry);
 
   const handleChange = (e) => {
     const value = e.target.value;
     setInput(value);
 
-    // Detect pin/unpin commands
     if (/^pin from/i.test(value)) {
       const match = value.match(/^pin from (\w+)/i);
       if (match) pinContext({ account: match[1] });
@@ -28,16 +29,25 @@ function EntryBar() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && parsed) {
+      e.preventDefault();
+      addEntry(parsed);
+      setInput('');
+      setParsed(null);
+    }
+  };
+
   return (
     <Container>
       <Row className="my-4">
         <Col>
           <Form.Control
             type="text"
-            // TODO: Add example usage
-            placeholder="Enter transaction or pin (e.g., pin from HDFC)"
+            placeholder="Enter transaction"
             value={input}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
             className="mb-3"
           />
           {parsed && (
