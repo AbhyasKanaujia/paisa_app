@@ -2,15 +2,30 @@ import React, { useState } from 'react';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import parseEntryStub from '../utils/parseEntryStub';
+import usePinnedContextStore from '../store/usePinnedContextStore';
 
 function EntryBar() {
   const [input, setInput] = useState('');
   const [parsed, setParsed] = useState(null);
 
+  const pinContext = usePinnedContextStore((state) => state.pinContext);
+  const unpinAll = usePinnedContextStore((state) => state.unpinAll);
+
   const handleChange = (e) => {
     const value = e.target.value;
     setInput(value);
-    setParsed(parseEntryStub(value));
+
+    // Detect pin/unpin commands
+    if (/^pin from/i.test(value)) {
+      const match = value.match(/^pin from (\w+)/i);
+      if (match) pinContext({ account: match[1] });
+      setParsed(null);
+    } else if (/^unpin all/i.test(value)) {
+      unpinAll();
+      setParsed(null);
+    } else {
+      setParsed(parseEntryStub(value));
+    }
   };
 
   return (
@@ -19,7 +34,8 @@ function EntryBar() {
         <Col>
           <Form.Control
             type="text"
-            placeholder="Enter transaction (e.g., > 150 chai from HDFC)"
+            // TODO: Add example usage
+            placeholder="Enter transaction or pin (e.g., pin from HDFC)"
             value={input}
             onChange={handleChange}
             className="mb-3"
