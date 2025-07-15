@@ -1,21 +1,12 @@
 import React from 'react';
-import IncomeForm from './components/IncomeForm';
-import ExpenseForm from './components/ExpenseForm';
-import Summary from './components/Summary';
-import TransactionList from './components/TransactionList';
-
+import { Routes, Route } from 'react-router-dom';
+import Console from './pages/Console';
 
 function App() {
   return (
-      <div style={{ padding: '1rem' }}>
-        <h1>Budget Manager</h1>
-        <div style={{ display: 'flex', gap: '2rem' }}>
-          <IncomeForm />
-          <ExpenseForm />
-        </div>
-        <Summary />
-        <TransactionList />
-      </div>
+    <Routes>
+      <Route path="/" element={<Console />} />
+    </Routes>
   );
 }
 
