@@ -1,7 +1,12 @@
 import express from 'express'
 import cors from 'cors'
+import path from 'path'
+import { fileURLToPath } from 'url'
 import healthRouter from './routes/health.js'
 import authRouter from './routes/auth.js'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+const isProd = process.env.NODE_ENV === 'production'
 
 const app = express()
 
@@ -10,6 +15,15 @@ app.use(express.json())
 
 app.use('/api/health', healthRouter)
 app.use('/api/auth', authRouter)
+
+// Serve React build in production
+if (isProd) {
+  const clientDist = path.join(__dirname, '../client/dist')
+  app.use(express.static(clientDist))
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(clientDist, 'index.html'))
+  })
+}
 
 // Global error handler
 app.use((err, req, res, next) => {
