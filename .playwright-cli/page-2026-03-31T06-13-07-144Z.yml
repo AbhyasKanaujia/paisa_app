@@ -1,0 +1,13 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - heading "Paisa" [level=1] [ref=e6]
+    - paragraph [ref=e7]: Your financial clarity
+  - generic [ref=e8]:
+    - textbox "Email" [ref=e10]: test@paisa.dev
+    - textbox "Password" [ref=e12]: password123
+    - paragraph [ref=e16]: res.json is not a function
+    - button "Sign in" [ref=e13]
+  - paragraph [ref=e14]:
+    - text: No account?
+    - link "Create one" [ref=e15] [cursor=pointer]:
+      - /url: /register

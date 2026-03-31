@@ -10,7 +10,9 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "build": "cd client && npm install && npm run build",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "type": "module",
   "engines": {
@@ -28,6 +30,7 @@
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "concurrently": "^9.1.2",
     "mongodb-memory-server": "^11.0.1",
     "nodemon": "^3.1.9",
