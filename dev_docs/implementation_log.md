@@ -13,8 +13,8 @@
 - [x] Configure Tailwind CSS in client
 - [x] Set up Claude API (Anthropic SDK) in server
 - [x] Set up basic health check route (`GET /api/health`)
-- [ ] Deploy skeleton to production (Render / Railway + Vercel)
-- [ ] Set up environment variables in production
+- [x] Deploy skeleton to production (Render / Railway + Vercel)
+- [x] Set up environment variables in production
 
 ---
 
@@ -26,7 +26,7 @@
 
 > Goal: a user can connect their financial data and see it in one place.
 
-- [ ] User auth (signup, login, JWT)
+- [x] User auth (signup, login, JWT)
 - [ ] Manual account creation (bank, cash, credit card)
 - [ ] CSV / statement upload for transaction import
 - [ ] Basic transaction parser (amount, date, description from CSV)
