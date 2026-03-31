@@ -1,6 +1,7 @@
 const BASE = '/api/auth'
 
-const handle = async (res) => {
+const handle = async (fetchPromise) => {
+  const res = await fetchPromise
   const data = await res.json()
   if (!res.ok) throw new Error(data.message || 'Something went wrong')
   return data
