@@ -47,6 +47,15 @@ test.beforeAll(async () => {
   await ctx.dispose()
 })
 
+test.afterAll(async () => {
+  if (!registeredToken) return
+  const ctx = await request.newContext()
+  await ctx.delete('http://localhost:8000/api/auth/me', {
+    headers: { Authorization: `Bearer ${registeredToken}` },
+  })
+  await ctx.dispose()
+})
+
 // ─── Register page ────────────────────────────────────────────────────────────
 
 test.describe('Register page', () => {

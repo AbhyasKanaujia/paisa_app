@@ -59,4 +59,10 @@ router.get('/me', protect, (req, res) => {
   res.json({ id, name, email, createdAt })
 })
 
+// DELETE /api/auth/me  (protected) — delete own account
+router.delete('/me', protect, async (req, res) => {
+  await User.findByIdAndDelete(req.user._id)
+  res.json({ message: 'Account deleted' })
+})
+
 export default router
