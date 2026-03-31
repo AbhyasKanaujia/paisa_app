@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import useAuthStore from '../store/useAuthStore'
 
 export default function Home() {
@@ -18,6 +18,12 @@ export default function Home() {
           Hey, {user?.name?.split(' ')[0]}
         </h1>
         <p className="text-gray-500 text-sm">Financial clarity is coming soon.</p>
+        <Link
+          to="/accounts"
+          className="inline-block mt-4 text-gray-400 hover:text-white text-sm transition-colors"
+        >
+          Accounts →
+        </Link>
         <button
           onClick={handleLogout}
           className="mt-8 text-gray-600 hover:text-gray-400 text-sm transition-colors"

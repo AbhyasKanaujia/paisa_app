@@ -4,6 +4,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import healthRouter from './routes/health.js'
 import authRouter from './routes/auth.js'
+import accountsRouter from './routes/accounts.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -15,6 +16,7 @@ app.use(express.json())
 
 app.use('/api/health', healthRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/accounts', accountsRouter)
 
 // Serve React build in production
 if (isProd) {
@@ -35,7 +37,8 @@ app.use((err, req, res, next) => {
 
   // Mongoose duplicate key → 409
   if (err.code === 11000) {
-    return res.status(409).json({ message: 'Email already registered' })
+    const field = Object.keys(err.keyPattern || {})[0] || 'field'
+    return res.status(409).json({ message: `${field === 'email' ? 'Email' : 'An account with that name'} already exists` })
   }
 
   console.error(err)
