@@ -1,146 +1,62 @@
-# 💸 Paisa App
+# Paisa
 
-> A radically fast, flow-based personal finance tracker.  
-> Designed to **stay in the zone** — no clicks, no clutter, no friction.
-
----
-
-## 🧠 Concept
-
-**Paisa** reimagines how you enter personal finance data.  
-Forget clunky forms and endless dropdowns.  
-Inspired by **Vim**, **Typeform**, and **command palettes**, this app lets you log your finances **as fast as you think**.
+You don't need to become a finance person to have financial clarity.
 
 ---
 
-## 🎯 Core Philosophy
+## The problem with every budgeting app
 
-- 🧭 **One line. One entry. One flow.**
-- ⌨️ **Keyboard-first**. No tabbing. No mouse.
-- 🧠 **Smart parsing**. Natural language style input.
-- 📌 **Pin recurring context** like account, date, or tags — enter dozens of entries without repetition.
-- 🗂 **Batch entries**. Log multiple transactions in one go.
-- 🏹 **Arrow-key mode switch** — easily toggle between expense and income entry.
+They were all built around the same assumption: that managing money is a job — one that requires you to log transactions, maintain categories, reconcile accounts, and read reports.
 
----
+That assumption was true when software couldn't think.
 
-## ✨ Example Usage
-
-### 🔹 A single entry:
-```
-> 150 coffee @Starbucks from HDFC on Apr 10 #food
-```
-
-### 🔹 Pin context:
-```
-> pin from HDFC on Apr 10 #food
-```
-Now just:
-```
-> 120 sandwich @Subway
-> 200 tea @Chaayos
-```
-
-All inherit the pinned values.
-
-### 🔹 Unpin:
-```
-> unpin all
-```
-
-### 🔹 Batch mode:
-Paste multiple lines:
-```
-> 100 dosa @Sagar
-> 80 juice @JuiceHub
-> 60 vada @StreetStall
-```
-
-Boom — logged instantly.
-
-### 🔹 Income entry:
-```
-< 10000 salary from Razorpay on Apr 7 #income
-```
+It isn't anymore.
 
 ---
 
-## 🔁 Entry Mode Controls
+## What Paisa is
 
-### 🧭 Markers
-- Use `>` for **Expense** (default)
-- Use `<` for **Income**
+Paisa is a personal finance companion that works the way you actually think about money.
 
-### ⌨️ Arrow Key Shortcuts
-- `→` Right Arrow → Expense mode
-- `←` Left Arrow → Income mode
-- Optional: `Shift + Arrow` to **pin** mode across batch entries
+You don't maintain a budget. You ask questions and get honest answers.
+You don't log transactions. Your money moves and Paisa already knows.
+You don't read reports. Paisa tells you what matters, when it matters.
 
-### 🧠 Fallback Priority
-1. Arrow key override (most recent)
-2. Marker symbol (`>` or `<`)
-3. Default: Expense
-
-Live parser preview updates with mode changes.
+The goal is simple: **you should always know if you're okay, without having to do anything to find out.**
 
 ---
 
-## ⚙️ Tech Stack (Planned)
+## Outcome roadmap
 
-| Layer | Tech |
-|-------|------|
-| UI | React + Tailwind + Framer Motion |
-| Input Parser | Custom / Nearley.js |
-| Command Bar | [cmdk](https://cmdk.paco.me/) |
-| Backend | Node.js + MongoDB |
-| CLI (Optional) | Node + Inquirer.js |
-| Charts | Recharts / Tremor |
+### Now — Know where you stand
+Connect your accounts. That's the only setup. Paisa reads your transactions, understands your patterns, and gives you a single, honest read on your financial health — no categories to create, no rules to configure.
 
----
+### Next — Make confident decisions
+Ask Paisa anything. *Can I afford a weekend trip next month? Am I spending more than usual on food? What happens to my savings if I switch gyms?* Get a direct answer, not a chart to interpret.
 
-## 🚧 MVP Features
-
-- [ ] Command-style input
-- [ ] Context pinning (account/date/tag)
-- [ ] Real-time parser + preview
-- [ ] Multi-line batch entry
-- [ ] Undo/redo support
-- [ ] Monthly summaries
-- [ ] Offline-first support
-- [ ] Sync with cloud
-- [ ] Expense/income arrow key toggle
+### Later — Make progress on what matters
+Tell Paisa what you're saving for. It fits your goal into your actual financial life — not a separate "savings tracker" you have to maintain, but something that adjusts as your spending does.
 
 ---
 
-## 🧪 Inspirations
+## Getting started
 
-- **Vim** – for modal/flow thinking
-- **Typeform** – for single-focus input design
-- **Notion** – for minimal structure with flexibility
-- **Raycast / Alfred** – for command palette UX
-- **Linear** – for speed and polish
-
----
-
-## 🚀 Getting Started (Coming Soon)
-
+**1. Install**
 ```bash
 git clone https://github.com/AbhyasKanaujia/paisa_app.git
-cd paisa-app
-npm install
-npm run dev
+cd paisa_app
+npm install && npm run dev
 ```
 
+**2. Connect your account**
+Open `http://localhost:3000` and link a bank account or card. Takes under a minute.
+
+**3. Ask your first question**
+No setup. No categories. No budget template.
+Just ask — *"How am I doing this month?"* — and Paisa will tell you.
+
 ---
 
-## 🙌 Contribute
-
-Want to help design or build Paisa? Open an issue or ping me!  
-We’re building this for humans who value **clarity, speed, and flow**.
-
----
-
-## 📜 License
+## License
 
 GPL-3.0-or-later
-

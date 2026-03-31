@@ -1,41 +1,40 @@
 {
   "name": "paisa_app",
-  "version": "1.0.0",
-  "description": "Personal Budget Management",
-  "main": "server.js",
+  "version": "0.1.0",
+  "description": "Paisa — AI-native personal finance clarity",
+  "main": "server/index.js",
   "scripts": {
-    "start": "node server.js",
-    "server": "nodemon server.js --ignore client/",
-    "client": "cd client && npm start",
+    "start": "node server/index.js",
+    "server": "nodemon",
+    "client": "cd client && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "cd client && npm install && npm run build"
+    "build": "cd client && npm install && npm run build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
+  "type": "module",
   "engines": {
-    "node": "18.x"
+    "node": ">=18.x"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AbhyasKanaujia/paisa_app.git"
-  },
-  "keywords": [
-    "finance",
-    "budget",
-    "money"
-  ],
   "author": "Abhyas Kumar Kanaujia",
   "license": "GPL-3.0-or-later",
-  "bugs": {
-    "url": "https://github.com/AbhyasKanaujia/paisa_app/issues"
-  },
-  "homepage": "https://github.com/AbhyasKanaujia/paisa_app#readme",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.13.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "concurrently": "^9.1.2",
-    "nodemon": "^3.1.9"
+    "mongodb-memory-server": "^11.0.1",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.2"
   }
 }
