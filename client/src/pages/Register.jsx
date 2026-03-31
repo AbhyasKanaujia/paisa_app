@@ -44,7 +44,7 @@ export default function Register() {
               onChange={(e) => setName(e.target.value)}
               required
               autoFocus
-              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-600 transition-colors"
+              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-gray-600 transition-colors"
             />
           </div>
 
@@ -55,7 +55,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-600 transition-colors"
+              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-gray-600 transition-colors"
             />
           </div>
 
@@ -67,7 +67,7 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               required
               minLength={8}
-              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-gray-600 transition-colors"
+              className="w-full bg-gray-900 text-white placeholder-gray-600 border border-gray-800 rounded-lg px-4 py-3 text-base focus:outline-none focus:border-gray-600 transition-colors"
             />
           </div>
 
