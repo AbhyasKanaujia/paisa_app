@@ -4,3 +4,6 @@ client/node_modules/
 dist/
 client/dist/
 .DS_Store
+.playwright-cli/
+test-results/
+playwright-report/
