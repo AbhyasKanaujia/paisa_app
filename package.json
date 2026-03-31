@@ -1,0 +1,30 @@
+{
+  "name": "paisa_app",
+  "version": "0.1.0",
+  "description": "Paisa — AI-native personal finance clarity",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "server": "nodemon server/index.js",
+    "client": "cd client && npm run dev",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm install && npm run build"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=18.x"
+  },
+  "author": "Abhyas Kumar Kanaujia",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.13.2"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
+  }
+}
