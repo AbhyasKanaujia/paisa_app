@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 
 export default function ChatPanel({ onExpand, onCollapse, onDismiss, isFullscreen, isLarge }) {
   const [messages, setMessages] = useState([
@@ -8,6 +8,14 @@ export default function ChatPanel({ onExpand, onCollapse, onDismiss, isFullscree
   const [loading, setLoading] = useState(false)
   const threadIdRef = useRef(null)
   const bottomRef = useRef(null)
+  const textareaRef = useRef(null)
+
+  const autoResize = useCallback(() => {
+    const el = textareaRef.current
+    if (!el) return
+    el.style.height = 'auto'
+    el.style.height = Math.min(el.scrollHeight, 160) + 'px'
+  }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -21,6 +29,7 @@ export default function ChatPanel({ onExpand, onCollapse, onDismiss, isFullscree
     setMessages((m) => [...m, { role: 'user', text }])
     setInput('')
     setLoading(true)
+    if (textareaRef.current) { textareaRef.current.style.height = 'auto' }
 
     // Add a placeholder AI message that we'll stream into
     setMessages((m) => [...m, { role: 'ai', text: '', streaming: true }])
@@ -165,20 +174,25 @@ export default function ChatPanel({ onExpand, onCollapse, onDismiss, isFullscree
       </div>
 
       {/* input */}
-      <form onSubmit={send} className="flex items-center border-t border-stone-200 px-5 py-3 gap-3 shrink-0">
-        <span className="font-mono text-[#c8a96e] text-sm select-none">›_</span>
-        <input
-          type="text"
+      <form onSubmit={send} className="flex items-end border-t border-stone-200 px-5 py-3 gap-3 shrink-0">
+        <span className="font-mono text-[#c8a96e] text-sm select-none mb-0.5">›_</span>
+        <textarea
+          ref={textareaRef}
+          rows={1}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={(e) => { setInput(e.target.value); autoResize() }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(e) }
+          }}
           placeholder="Ask about your finances…"
           disabled={loading}
-          className="flex-1 font-mono text-sm bg-transparent outline-none text-stone-800 placeholder-stone-300 disabled:opacity-50"
+          className="flex-1 font-mono text-sm bg-transparent outline-none text-stone-800 placeholder-stone-300 disabled:opacity-50 resize-none leading-relaxed overflow-y-auto"
+          style={{ maxHeight: '160px' }}
         />
         <button
           type="submit"
           disabled={!input.trim() || loading}
-          className="font-mono text-xs text-stone-400 hover:text-stone-700 disabled:opacity-30 transition-colors uppercase tracking-widest"
+          className="font-mono text-xs text-stone-400 hover:text-stone-700 disabled:opacity-30 transition-colors uppercase tracking-widest mb-0.5"
         >
           {loading ? '…' : 'Send'}
         </button>

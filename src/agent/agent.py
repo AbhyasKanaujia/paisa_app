@@ -38,21 +38,23 @@ Rules:
 - Format currency amounts in INR with the ₹ symbol.
 """
 
-_TOOL_CALL_RE = re.compile(r'^\s*\{.*"tool"\s*:.*\}\s*$', re.DOTALL)
+_TOOL_CALL_LINE_RE = re.compile(r'^\s*\{.*"tool"\s*:.*\}\s*$')
 
 
-def _is_tool_call(text: str) -> bool:
-    return bool(_TOOL_CALL_RE.match(text))
+def _parse_tool_calls(text: str) -> list[tuple[str, dict]]:
+    """Parse one or more tool call JSON objects from a response."""
+    results = []
+    for line in text.splitlines():
+        if not _TOOL_CALL_LINE_RE.match(line):
+            continue
+        try:
+            obj = json.loads(line.strip())
+            if "tool" in obj:
+                results.append((obj["tool"], obj.get("args", {})))
+        except json.JSONDecodeError:
+            pass
+    return results
 
-
-def _parse_tool_call(text: str) -> tuple[str, dict] | None:
-    try:
-        obj = json.loads(text.strip())
-        if "tool" in obj:
-            return obj["tool"], obj.get("args", {})
-    except json.JSONDecodeError:
-        pass
-    return None
 
 
 async def _ollama_complete(messages: list[dict]) -> tuple[str, dict]:
@@ -125,23 +127,17 @@ async def _run_untraced(messages: list[dict]) -> AsyncIterator[str]:
         response, _ = await _ollama_complete(messages)
         logger.debug("ollama response (iter %d): %r", i, response[:200])
 
-        if not _is_tool_call(response):
+        tool_calls = _parse_tool_calls(response)
+        if not tool_calls:
             yield response
             return
-
-        parsed = _parse_tool_call(response)
-        if parsed is None:
-            logger.warning("failed to parse tool call: %r", response)
-            yield response
-            return
-
-        tool_name, tool_args = parsed
-        logger.info("tool call: %s args=%s", tool_name, tool_args)
-        tool_result = await execute_tool(tool_name, tool_args, "")
-        logger.debug("tool result: %r", str(tool_result)[:200])
 
         messages.append({"role": "assistant", "content": response})
-        messages.append({"role": "user", "content": f"Tool result: {tool_result}"})
+        for tool_name, tool_args in tool_calls:
+            logger.info("tool call: %s args=%s", tool_name, tool_args)
+            tool_result = await execute_tool(tool_name, tool_args, "")
+            logger.debug("tool result: %r", str(tool_result)[:200])
+            messages.append({"role": "user", "content": f"Tool result: {tool_result}"})
 
     async for token in _ollama_stream(messages):
         yield token
@@ -153,6 +149,7 @@ async def _run_traced(
     user_id: str,
     session_id: str | None,
 ) -> AsyncIterator[str]:
+    assert _langfuse is not None
     final_answer_parts: list[str] = []
 
     # start_as_current_observation activates the OTel context so child spans
@@ -181,30 +178,24 @@ async def _run_traced(
                         llm_span.update(output=response, usage_details=usage)
                     logger.debug("ollama response (iter %d): %r", i, response[:200])
 
-                    if not _is_tool_call(response):
+                    tool_calls = _parse_tool_calls(response)
+                    if not tool_calls:
                         final_answer_parts.append(response)
                         yield response
                         return
 
-                    parsed = _parse_tool_call(response)
-                    if parsed is None:
-                        logger.warning("failed to parse tool call: %r", response)
-                        yield response
-                        return
-
-                    tool_name, tool_args = parsed
-                    logger.info("tool call: %s args=%s", tool_name, tool_args)
-                    with _langfuse.start_as_current_observation(
-                        name=tool_name,
-                        as_type="tool",
-                        input=tool_args,
-                    ) as tool_span:
-                        tool_result = await execute_tool(tool_name, tool_args, user_id)
-                        tool_span.update(output=_summarize_tool_result(tool_name, tool_result))
-                    logger.debug("tool result: %r", str(tool_result)[:200])
-
                     messages.append({"role": "assistant", "content": response})
-                    messages.append({"role": "user", "content": f"Tool result: {tool_result}"})
+                    for tool_name, tool_args in tool_calls:
+                        logger.info("tool call: %s args=%s", tool_name, tool_args)
+                        with _langfuse.start_as_current_observation(
+                            name=tool_name,
+                            as_type="tool",
+                            input=tool_args,
+                        ) as tool_span:
+                            tool_result = await execute_tool(tool_name, tool_args, user_id)
+                            tool_span.update(output=_summarize_tool_result(tool_name, tool_result))
+                        logger.debug("tool result: %r", str(tool_result)[:200])
+                        messages.append({"role": "user", "content": f"Tool result: {tool_result}"})
 
                 logger.info("streaming final answer for user=%s", user_id)
                 async for token in _ollama_stream(messages):
