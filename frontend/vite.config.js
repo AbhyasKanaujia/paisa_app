@@ -9,6 +9,7 @@ export default defineConfig({
       '/auth': 'http://localhost:8000',
       '/accounts': 'http://localhost:8000',
       '/transactions': 'http://localhost:8000',
+      '/chat': 'http://localhost:8000',
     },
   },
 })

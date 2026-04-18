@@ -1,6 +1,6 @@
 # Paisa
 
-A personal finance tracking API. Track accounts, record transactions, and analyze spending — all via a REST API backed by MongoDB.
+A personal finance app with a conversational AI layer. Track accounts, record transactions, and analyze spending — via a REST API or by chatting with an AI assistant — all backed by MongoDB.
 
 ## Features
 
@@ -9,6 +9,9 @@ A personal finance tracking API. Track accounts, record transactions, and analyz
 - Record income, expenses, and transfers between accounts
 - Monthly summaries and spending breakdowns by category
 - Net worth calculation (credit accounts treated as liabilities)
+- Conversational AI assistant — query and record transactions in natural language
+- Persistent conversation history per user thread (MongoDB-backed)
+- Streaming responses via Server-Sent Events
 
 ## Tech Stack
 
@@ -18,6 +21,8 @@ A personal finance tracking API. Track accounts, record transactions, and analyz
 - **Motor** — async MongoDB driver
 - **bcrypt** — password hashing
 - **PyJWT** — JWT tokens
+- **httpx** — async HTTP client (Ollama requests)
+- **Ollama** — local LLM inference (`gemma3:27b`)
 
 **Frontend** (`frontend/`)
 - **Vite + React** — dev server with HMR
@@ -28,6 +33,7 @@ A personal finance tracking API. Track accounts, record transactions, and analyz
 
 - Python 3.12+
 - MongoDB instance (local or Atlas)
+- [Ollama](https://ollama.com) running locally with `gemma3:27b` pulled
 
 ## Setup
 
@@ -68,6 +74,36 @@ This project uses the [`frontend-design`](https://github.com/claude-plugins-offi
 ```bash
 /plugin install frontend-design@claude-plugins-official
 ```
+
+## Agent Architecture
+
+The AI layer lives in `src/agent/`:
+
+```
+src/agent/
+├── README.md          # decisions and roadmap
+├── tools.py           # tool definitions and execution (wraps existing services)
+├── agent.py           # JSON tool loop: prompt → tool call → execute → answer
+└── chat_service.py    # conversation history CRUD via Conversation model
+```
+
+The agent uses a simple tool loop (no LangGraph): the LLM responds with a JSON tool call, the server executes it against the existing services, and the result is fed back. The final answer is streamed to the client via SSE. See `src/agent/README.md` for the full decision log and roadmap.
+
+### Chat endpoint
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/chat` | Send a message; streams response via SSE |
+
+**Request:**
+```json
+{ "message": "What's my net worth?", "thread_id": "<uuid or omit for new thread>" }
+```
+
+**SSE event stream:**
+- First event: `thread_id` (persist this on the client for conversation continuity)
+- Subsequent events: streamed answer tokens
+- Final event: `[DONE]`
 
 ## API Reference
 
