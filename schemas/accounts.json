@@ -1,0 +1,24 @@
+{
+  "$jsonSchema": {
+    "bsonType": "object",
+    "required": ["name", "type", "balance"],
+    "properties": {
+      "name": {
+        "bsonType": "string",
+        "description": "Account name"
+      },
+      "type": {
+        "enum": ["cash", "bank", "credit_card", "wallet"],
+        "description": "Account type"
+      },
+      "balance": {
+        "bsonType": "number",
+        "description": "Current balance"
+      },
+      "created_at": {
+        "bsonType": "date",
+        "description": "When the account was created"
+      }
+    }
+  }
+}

@@ -107,12 +107,15 @@ if [ -z "$MONGODB_URI" ]; then
     warn "skipped — MONGODB_URI not set"
 elif ! command -v mongosh &>/dev/null; then
     warn "skipped — mongosh not installed"
+elif [ ! -x scripts/mongo ]; then
+    warn "skipped — scripts/mongo not found or not executable"
 else
-    result=$(mongosh "$MONGODB_URI" --quiet --eval "JSON.stringify(db.runCommand({ping:1}))" 2>&1)
+    # Test via scripts/mongo — the actual helper the project depends on
+    result=$(./scripts/mongo --quiet --eval "JSON.stringify(db.runCommand({ping:1}))" 2>&1)
     if echo "$result" | grep -q '"ok":1'; then
-        pass "MongoDB ping successful"
+        pass "MongoDB ping via scripts/mongo"
     else
-        fail "MongoDB ping failed"
+        fail "MongoDB ping via scripts/mongo failed"
         info "$result"
     fi
 fi
