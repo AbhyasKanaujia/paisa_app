@@ -1,31 +1,21 @@
 # Paisa App
 
-## Environment Check
-
-Before starting, run the diagnostic script to verify tools, env vars, and database connectivity are all wired up:
+## Setup
 
 ```bash
-./scripts/check_env.sh
+./scripts/check_env.sh           # verify env, tools, DB connectivity
+python3 -m venv .venv && .venv/bin/pip install -e .
 ```
 
-It checks `.env` values, required CLI tools (`mongosh`, `python3`), MongoDB ping, and project setup. Never crashes — just reports PASS / WARN / FAIL with suggestions. Add new checks there as the app grows.
+See [README.md](README.md) for full setup, schema details, and architecture.
 
-## Schema
+## Daily Commands
 
-`schemas/*.json` is the single source of truth for the database structure. These are standard MongoDB JSON Schema files — language-agnostic and directly usable by `mongosh`.
+- `./scripts/mongo` — MongoDB shell (auto-sources `.env`)
+- `./scripts/check_env.sh` — health check
 
-Use `./scripts/mongo` as a shortcut for `mongosh` (it sources `.env` and passes the URI for you):
-```bash
-./scripts/mongo                  # interactive shell
-./scripts/mongo --eval "..."     # run a command
-```
+## Key Rules
 
-Apply schemas to the database:
-```bash
-./scripts/mongo --eval "
-  db.accounts.drop();
-  db.transactions.drop();
-  db.createCollection('accounts', { validator: $(cat schemas/accounts.json) });
-  db.createCollection('transactions', { validator: $(cat schemas/transactions.json) });
-"
-```
+- `schemas/*.json` is the source of truth for DB structure.
+- `src/services/` are the only files that touch the database.
+- To add a required env var, add it to the `REQUIRED_VARS` array in `scripts/check_env.sh`.
